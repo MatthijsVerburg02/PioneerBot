@@ -8,7 +8,7 @@ git clone https://github.com/MatthijsVerburg02/PioneerBot.git
 
 Ga naar die folder:
 ```
-cd 27012025 
+cd PioneerBot
 ```
 
 Run in die folder het volgende commando:
