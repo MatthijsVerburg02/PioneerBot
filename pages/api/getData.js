@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 
+// Connect to the database
 const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
@@ -8,13 +9,14 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
+// Replace underscores with spaces
 function replaceUnderscoreWithSpace(str) {
   return str.replace(/_/g, ' ').replace(/\^/g, ' ');
 }
 
 export default async function handler(req, res) {
   try {
-    // Haal sensor en limit op uit de queryparameters
+    // Check if the required parameters are provided
     const { sensor, location, timestamp1, timestamp2 } = req.query;
     if (!sensor ||  !location || !timestamp1 || !timestamp2) {
       return res.status(400).json({ error: "Missing required parameters" });

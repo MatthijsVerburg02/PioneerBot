@@ -118,7 +118,6 @@ export default function ChartComponent() {
     fetchData();
   }, []);
 
-  // Scroll naar de rechterkant wanneer de data geladen is
   useEffect(() => {
     if (chartData && chartContainerRef.current) {
       const container = chartContainerRef.current;

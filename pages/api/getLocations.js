@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 
+// Connect to the database
 const pool = new Pool({
   host: process.env.PGHOST,
   user: process.env.PGUSER,
@@ -8,6 +9,7 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
+// This function fetches the locations from the database
 export default async function handler(req, res) {
   try {
     const query = `

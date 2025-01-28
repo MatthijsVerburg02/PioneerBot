@@ -1,4 +1,4 @@
-// components/locations.js
+// Purpose: Fetches the locations from the database and returns them in the desired format
 export async function getLocations() {
   const location = parseInt(localStorage.getItem("location"), 10) || 1;
   const response = await fetch('/api/getLocations'); 

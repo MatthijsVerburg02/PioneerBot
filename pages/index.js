@@ -1,3 +1,4 @@
+// Here I do all the needed imports. 
 import React, { useState, useRef, useEffect } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL, { Marker } from 'react-map-gl';
@@ -7,7 +8,9 @@ import styles from '../styles/home.module.css';
 import { setSensor, getSensor,  setLocation, getLocation, setTimestamp1,  setTimestamp2 } from './api/updateChoices';
 import { getLocations } from "../components/locations";
 
+// The Home function is the main function of the homepage, containing all the logic and rendering of the page.
 export default function Home() {
+  // Here I define all the needed states and refs.
   const [activeTab, setActiveTab] = useState('map');
   const [activeSensor, setActiveSensor] = useState('');
   const [selectedMarker, setSelectedMarker] = useState(null);
@@ -16,6 +19,7 @@ export default function Home() {
   const isDraggingRef = useRef(false);
   const [locations, setLocations] = useState([]);
   const [viewport, setViewport] = useState({latitude: 52.001849897641435, longitude: 4.367876594409242, zoom: 19, width: '100%', height: '100vh'});
+  const [refreshKey, setRefreshKey] = useState(0);
   const [dateTime1, setDateTime1] = useState(() => {
     const now = new Date();
     now.setMonth(now.getMonth() - 2);
@@ -26,8 +30,6 @@ export default function Home() {
     const now = new Date();
     return now.toISOString().replace("T", "^").split(".")[0]; 
   });
-  const [refreshKey, setRefreshKey] = useState(0);
-
   const handleSensorClick = (sensor) => {
     setSensor(sensor);
     setActiveSensor(sensor);
@@ -45,10 +47,8 @@ export default function Home() {
   };
   const handleMouseMove = (e) => {
     if (!isDraggingRef.current || !containerRef.current) return;
-
     const containerRect = containerRef.current.getBoundingClientRect();
     const newLeftWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-
     if (newLeftWidth >= 15 && newLeftWidth <= 85) {
       setLeftWidth(newLeftWidth);
     }
@@ -67,6 +67,7 @@ export default function Home() {
     setRefreshKey((prevKey) => prevKey + 1); 
   };
   
+  // Here I fetch the locations from the API and set the initial values of the states.
   useEffect(() => {
     setActiveSensor(getSensor());
     setLocation(getLocation());
@@ -84,14 +85,17 @@ export default function Home() {
     fetchLocations();    
   }, []);
 
+  // Here I return the JSX of the homepage.
   return (
     <>
+    {/* Here I define the head of the page, containing the title, description and favicon. */}
     <Head>
         <title>Pioneerbot</title>
         <meta name="description" content="Welcome to the Pioneerbot homepage!" />
         <link rel="shortcut icon" href="turtlebot.png" type="image/png" />
     </Head>
     
+    {/* Here I define the main content of the page, containing the map, the turtlebot information and the datavisualisation. */}
     <main>
     <div  className={styles.container} style={{ height: '100vh', display: 'flex', flexDirection: 'column' }} 
     ref={containerRef} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp} >
@@ -101,7 +105,7 @@ export default function Home() {
             <button onClick={() => setActiveTab('map')} className={`${styles.buttonLeftPanel} ${activeTab === 'map' ? styles.activeTab : ''}`} >Map</button>
             <button onClick={() => setActiveTab('turtlebot')}  className={`${styles.buttonLeftPanel} ${activeTab === 'turtlebot' ? styles.activeTab : ''}`}  >TurtleBot</button>
           </div>
-
+          {/** Here I render the map or the turtlebot information, depending on the active tab. */}
           {activeTab === 'map' && (
             <div style={{ width: '100%', height: '100%' }}>
               <ReactMapGL
@@ -122,9 +126,11 @@ export default function Home() {
             
           )}
         </div>
-
+        
+        {/** Here I render the divider between the left and right panel. */}
         <div className={styles.divider} onMouseDown={handleMouseDown} />
 
+        {/** Here I render the datavisualisation panel. */}
         <div className={styles.rightPanel} style={{ width: `${100 - leftWidth}%`, height: '100vh' }}>
           <h2 style={{ display: 'flex', justifyContent: 'space-evenly' }}>Datavisualisation</h2>
           {selectedMarker == null && (
@@ -153,6 +159,7 @@ export default function Home() {
         </div>
       </div>
       
+      {/* Here I do a litte rickroll */}
       <div className={styles.iconContainer}><a href="https://youtu.be/dQw4w9WgXcQ?si=FwJG3ld_9r2V9mx2" target="_blank" rel="noopener noreferrer"><img src="/goose.png" alt="Goose"/></a></div>
     </div>
   
